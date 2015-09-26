@@ -17,15 +17,15 @@ File.prototype.closeAsync = function() {
     return fs.closeAsync(handle);
 };
 
+// this is exactly as it seems on slides but still fails...
 File.openAsync = function(name, mode) {
     var file = new File(secret);
     // Implementation:
-
-    return fs.openAsync(ame, mode).then(function(handle) {
+    return fs.openAsync(name, mode).then(function(handle) {
         file._handle = handle;
         return file;
     }).disposer(function(file) {
-            file.closeAsync();
+        return file.closeAsync().catch(function() {});
     })
     // Return a promise chain that starts with using the fs module's openAsync
     // method used to open a new handle for the given `name` and `mode`.
