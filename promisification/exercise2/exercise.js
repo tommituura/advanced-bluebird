@@ -5,6 +5,27 @@ var TimeoutError = Promise.TimeoutError;
 Promise.promisifyAll(restler, {
     promisifier: function(originalFunction) {
         return function promisifiedRestlerMethod() {
+            var restlerObject = originalFunction.apply(this, arguments);
+
+
+            return new Promise(function(resolve, reject) {
+                restlerObject.on('success', function (result) {
+                    resolve(result);
+                });
+
+                restlerObject.on('fail', function (result) {
+                    reject(result);
+                });
+
+                // this is the same as the above.
+                restlerObject.on('error', reject);
+
+                restlerObject.on('timeout', function (result) {
+                    console.log('hoi')
+                    reject(new TimeoutError());
+                });
+
+            });
             // Implementation:
             //
             // Call the original restler method with same context and arguments as
