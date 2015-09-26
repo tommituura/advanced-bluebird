@@ -30,6 +30,7 @@ module.exports = function(test) {
     // you should return an object:
     // `{error: "Something went wrong. Please try again later"}`
 
-    return test();
+    return test().then(function(result) {
+    });
 };
 
