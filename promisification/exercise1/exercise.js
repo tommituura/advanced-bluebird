@@ -3,12 +3,14 @@ var Promise = require("bluebird");
 
 Promise.promisifyAll(fs, {
     filter: function(name, method, target, passesDefaultFilter) {
+        return !/exists/.test(name);
         // Implementation: filter out 'exists'
     }
 });
 
 Promise.promisifyAll(fs, {
     filter: function(name, method, target, passesDefaultFilter) {
+        return /exists/.test(name)
         // Implementation: filter in 'exists'
     },
 
