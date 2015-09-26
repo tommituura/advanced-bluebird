@@ -6,6 +6,13 @@ Promise.promisifyAll(fs, {
         var promisified = defaultPromisifier(originalFunction);
 
         return function() {
+            var self = this;
+            var args = Array.prototype.slice.call(arguments);
+
+            return Promise.all(args).then(function (availableArguments) {
+                // remember return!
+                return promisified.apply(self, availableArguments);
+            });
             // Implementation:
             //
             // Save the context this function was called in
