@@ -21,6 +21,12 @@ File.openAsync = function(name, mode) {
     var file = new File(secret);
     // Implementation:
 
+    return fs.openAsync(ame, mode).then(function(handle) {
+        file._handle = handle;
+        return file;
+    }).disposer(function(file) {
+            file.closeAsync();
+    })
     // Return a promise chain that starts with using the fs module's openAsync
     // method used to open a new handle for the given `name` and `mode`.
     //
